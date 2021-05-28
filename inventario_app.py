@@ -18,15 +18,15 @@ cur = con.cursor()
 
 # GUI window
 root = Tk()
-root.geometry('960x600')
+root.geometry('825x450')
 
 # Setting the canvas
-my_Canvas = Canvas(root, width=960, height=600)
+my_Canvas = Canvas(root, width=825, height=450)
 my_Canvas.pack(side=LEFT, fill=BOTH, expand=1)
 
 # Creating the Frame inside of the canvas
-tree_frame = Frame(my_Canvas, width=710, height=290, background="bisque")
-tree_frame.place(x=120, y=300)
+tree_frame = Frame(my_Canvas, width=469, height=190, background="bisque")
+tree_frame.place(x=125, y=250)
 
 # Styling the tree
 style = ttk.Style()
@@ -40,16 +40,17 @@ style.map('Treeview',
 
 # Adding the tree
 tree = ttk.Treeview(tree_frame)
+tree.place(x=0, y=0, height=200)
 
 # Defining the columns
 tree['columns'] = ("ID", "Nome", "Quantidade", "Valor unitario")
 
 # Formating the columns
 tree.column("#0", width=0, stretch=NO)
-tree.column("ID", anchor=CENTER, width=180, minwidth=25)
-tree.column("Nome", anchor=CENTER, width=180, minwidth=25)
-tree.column("Quantidade", anchor=CENTER, width=176, minwidth=25)
-tree.column("Valor unitario", anchor=CENTER, width=170, minwidth=25)
+tree.column("ID", anchor=CENTER, width=70, minwidth=25)
+tree.column("Nome", anchor=CENTER, width=120, minwidth=25)
+tree.column("Quantidade", anchor=CENTER, width=156, minwidth=25)
+tree.column("Valor unitario", anchor=CENTER, width=120, minwidth=25)
 
 # Create Headings
 tree.heading("#0", text="", anchor=CENTER)
@@ -58,134 +59,89 @@ tree.heading("Nome", text="Nome do Produto", anchor=CENTER)
 tree.heading("Quantidade", text="Quantidade em estoque", anchor=CENTER)
 tree.heading("Valor unitario", text="Valor Unitário", anchor=CENTER)
 
-cur.execute('SELECT * FROM produto')
+cur.execute('SELECT * FROM produto ORDER BY ID')
 rows = cur.fetchall()
 
 # Create striped row tags
 tree.tag_configure('oddrow', background="white")
 tree.tag_configure('evenrow', background="#4b0082")
 
-# Adding the data
-tree.place(x=0,y=0, height=290)
+# Adicionando os dados
 count = 0
 for r in rows:
     if count % 2 == 0:
-        tree.insert(parent='', index='end',iid=count, text='Parent', values=(r[0], r[1], r[2], r[3]), tags=('evenrow',))
+        tree.insert(parent='', index='end', iid=count, text='Parent', values=(r[0], r[1], r[2], r[3]),
+                    tags=('evenrow',))
     else:
         tree.insert(parent='', index='end', iid=count, text='Parent', values=(r[0], r[1], r[2], r[3]), tags=('oddrow',))
     count += 1
 
-# setting the labels and the buttons
-my_Canvas.create_text(160, 20, text='Digite o nome do produto que deseja add no inventário')
+# Definindo as labels e os botões
+my_Canvas.create_text(160, 20, text='Digite o nome do produto que deseja adicionar no estoque:')
 nome_produto = Entry(my_Canvas, width=25, borderwidth=2)
 my_Canvas.create_window(410, 20, window=nome_produto, height=25, width=180)
 
-my_Canvas.create_text(124, 60, text='Quantidade que deseja add no inventário')
+my_Canvas.create_text(124, 60, text='Quantidade que deseja adicionar no estoque:')
 quantidade_produto = Entry(my_Canvas, width=25, borderwidth=2)
 my_Canvas.create_window(410, 60, window=quantidade_produto, height=25, width=180)
 
-my_Canvas.create_text(109, 100, text='Valor que deseja add no inventário')
+my_Canvas.create_text(109, 100, text='Valor que deseja adicionar no estoque:')
 valor_produto = Entry(my_Canvas, width=25, borderwidth=2)
 my_Canvas.create_window(410, 100, window=valor_produto, height=25, width=180)
 
-my_Canvas.create_text(630, 65, text='Nome do produto no qual deseja atualizar')
-label_update_nome_entry = Entry(my_Canvas, width=25, borderwidth=2)
-my_Canvas.create_window(850, 65, window=label_update_nome_entry, height=25, width=180)
+my_Canvas.create_text(150, 160, text='Caso queira atualizar algum produto no estoque,')
+my_Canvas.create_text(150, 173, text=' selecione abaixo o que você deseja atualizar:')
 
-my_Canvas.create_text(670, 20, text='Caso queira atualizar algum produto no estoque,')
-my_Canvas.create_text(670, 35, text=' selecione abaixo o que você deseja atualizar:')
+my_Canvas.create_text(150, 205, text='Quantidade no estoque:')
+update_quantidade = Entry(my_Canvas, width=25, borderwidth=2)
+my_Canvas.create_window(310, 205, window=update_quantidade, height=25, width=180)
 
-# Setting the Radio buttons
-option_selected = IntVar()
-option_1 = Radiobutton(my_Canvas, text='Quantidade do Produto', variable=option_selected, value=1,
-                       command=lambda: clicked(option_selected.get())).place(x=600, y=97)
-option_2 = Radiobutton(my_Canvas, text='Valor do Produto', variable=option_selected, value=2,
-                       command=lambda: clicked(option_selected.get())).place(x=600, y=117)
-option_3 = Radiobutton(my_Canvas, text='Quantidade e Valor do Produto', variable=option_selected, value=3,
-                       command=lambda: clicked(option_selected.get())).place(x=600, y=137)
+my_Canvas.create_text(450, 205, text='Valor Atual:')
+update_valor = Entry(my_Canvas, width=25, borderwidth=2)
+my_Canvas.create_window(580, 205, window=update_valor, height=25, width=180)
 
 
-# Getting the value of the Dropdown menus
-def clicked(value):
-    global label_update_quantidade_entry, label_update_valor_entry
-    if value == 1:
-        my_Canvas.create_text(642, 210, text='Quantidade do Produto:')
-        label_update_quantidade_entry = Entry(my_Canvas, width=25, borderwidth=2)
-        my_Canvas.create_window(830, 210, window=label_update_quantidade_entry, height=25, width=180)
-
-    if value == 2:
-        my_Canvas.create_text(642, 210, text='Valor do Produto:')
-        label_update_valor_entry = Entry(my_Canvas, width=25, borderwidth=2)
-        my_Canvas.create_window(830, 210, window=label_update_valor_entry, height=25, width=180)
-
-    if value == 3:
-        my_Canvas.create_text(642, 185, text='Quantidade do Produto:')
-        label_update_quantidade_entry = Entry(my_Canvas, width=25, borderwidth=2)
-        my_Canvas.create_window(830, 185, window=label_update_quantidade_entry, height=25, width=180)
-
-        my_Canvas.create_text(660, 220, text='Valor do Produto:')
-        label_update_valor_entry = Entry(my_Canvas, width=25, borderwidth=2)
-        my_Canvas.create_window(830, 220, window=label_update_valor_entry, height=25, width=180)
-
-    # Update button
-    update = Button(my_Canvas, text='atualizar', command=lambda: update_func(option_selected.get()))
-    update.place(x=820, y=260)
-
-
-# Getting the value of the inserted options
 def confirm_btn():
-    global nome, qt, valor, con, cur
+    global nome_produto, quantidade_produto, valor_produto, con, cur
     nome = nome_produto.get()
-    print(nome)
     qt = quantidade_produto.get()
-    print(qt)
-    valor = valor_produto.get()
-    print(valor)
+    v = valor_produto.get()
 
-    # execute query
-    cur.execute(
-        f"INSERT INTO produto (nome_produto, quantidade_produto, valor_produto) VALUES ('{nome}', {qt}, {valor})")
+    # Executando a query
+    cur.execute(f"INSERT INTO produto (nome_produto, quantidade_produto, valor_produto) VALUES ('{nome}', {qt}, {v})")
 
-    cur.execute('SELECT * FROM produto')
+    nome_produto.delete(0, END)
+    quantidade_produto.delete(0, END)
+    valor_produto.delete(0, END)
 
-    rows = cur.fetchall()
-    for r in rows:
-        print(f'id = {r[0]}, nome produto = {r[1]}, quantidade = {r[2]}, valor = {r[3]}')
-
-    # commiting the data
+    # comitando o dado
     con.commit()
 
 
-def update_func(value):
-    global cur, label_update_quantidade_entry, label_update_valor_entry, label_update_nome_entry, con
-    nome = label_update_nome_entry.get()
-    print(nome)
-    if value == 1:
-        quantidade = label_update_quantidade_entry.get()
-        print(quantidade)
+# Atualiza os dados selecionados pelo usuário
+def update_func():
+    global cur, update_valor, update_quantidade, con, tree
+    # Pegando o número armazenado tree table
+    selected = tree.focus()
+    # Pegando os valores armazenados
+    values = tree.item(selected, 'values')
+    nome = values[1]
+    # Pegando o input
+    quantidade = update_quantidade.get()
+    update_quantidade.delete(0, END)
 
-        cur.execute(
-            f"UPDATE produto SET quantidade_produto = {quantidade} WHERE nome_produto = '{nome}';")
-    if value == 2:
-        valor = label_update_valor_entry.get()
+    valor = update_valor.get()
+    update_valor.delete(0, END)
+    # Executando o update do dado
+    cur.execute(f"UPDATE produto SET quantidade_produto = {quantidade} WHERE nome_produto = '{nome}';")
 
-        cur.execute(
-            f"UPDATE produto SET valor_produto = {valor} WHERE nome_produto = '{nome}';")
-
-    if value == 3:
-        quantidade = label_update_quantidade_entry.get()
-        valor = label_update_valor_entry.get()
-
-        cur.execute(
-            f"UPDATE produto SET quantidade_produto = {quantidade} WHERE nome_produto = '{nome}';")
-
-        cur.execute(
-            f"UPDATE produto SET valor_produto = {valor} WHERE nome_produto = '{nome}';")
+    cur.execute(f"UPDATE produto SET valor_produto = {valor} WHERE nome_produto = '{nome}';")
 
     # commiting the update
     con.commit()
 
 
+# Checar os dados na base de dados e envia e-mail ao fornecer se a quantidade de produtos for igual a 0
 def check_func():
     global cur
     situation = False
@@ -195,13 +151,12 @@ def check_func():
     for r in rows:
         print(r)
         if r[2] == 0:
-            print(f'o valor contido em r {r[2]}')
             situation = True
             produtos_inventario.append(r[1])
     msg = EmailMessage()
     msg['Subject'] = "Reposição de estoque"
     msg['From'] = 'felippoBeifong@gmail.com'
-    msg['To'] = 'coelho.luizfelippo@gmail.com'
+    msg['To'] = 'pedronhk@gmail.com'
     if situation:
         msg.set_content(f"Produto necessário a reposição:{produtos_inventario[0]}")
 
@@ -211,29 +166,42 @@ def check_func():
 
     if situation:
         messagebox.showinfo('check message',
-                            f'O produto {produtos_inventario[0]} está em falta! Já foi enviado e-mail ao fornecedor.')
+                            f'O produto {produtos_inventario[0]} está em falta! Já foi enviado e-mail ao fornecedor.',
+                            icon='warning')
     else:
-        messagebox.showinfo('check message', 'Sem produtos necessário a ser feito reposição.')
+        messagebox.showinfo('check message', 'Sem produtos necessário a ser feito reposição.', icon='info')
 
 
-def close_btn():
-    # close the cursor
-    cur.close()
-    # close the connection
-    con.close()
-    root.destroy()
+def drop_func():
+    global cur
+    delete = False
+    # Grab record data
+    selected = tree.focus()
+    # Grab record values
+    values = tree.item(selected, 'values')
+    nome = values[1]
+    msg_box = messagebox.askquestion('drop record', 'Certeza que deseja deletar este dado?', icon='warning')
+    if msg_box == 'yes':
+        delete = True
+    else:
+        delete = False
+    if delete:
+        cur.execute(f'DELETE FROM produto WHERE nome_produto = {nome}')
 
 
-# Checking the inventory Button
+# Botão de checagem de estoque
 check = Button(my_Canvas, text='check', command=check_func)
 check.place(x=720, y=260)
 
-# Confirm button
+# Botão de confirmação
 confirm = Button(my_Canvas, text='confirmar', command=confirm_btn)
-confirm.place(x=445, y=140)
+confirm.place(x=445, y=120)
 
-# Close button
-close = Button(my_Canvas, text='fechar programa', command=close_btn)
-close.place(x=40, y=220)
+# Botão de atualização
+update = Button(my_Canvas, text='update', command=update_func)
+update.place(x=680, y=205)
+
+# Botão de retirada de item na base de dados
+drop = Button(my_Canvas, image='drop', command=drop_func)
 
 mainloop()
