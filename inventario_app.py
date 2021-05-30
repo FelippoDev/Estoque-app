@@ -9,8 +9,8 @@ from email.message import EmailMessage
 con = psycopg2.connect(
     host="127.0.0.1",
     database="produtos",
-    user="postgres",
-    password="postgres",
+    user="user",
+    password="password",
     port=3307,
 )
 
@@ -177,7 +177,7 @@ def check_func():
             msg.set_content(f"Produto necessário a reposição:{produtos_inventario[0]}")
 
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-            smtp.login('felippoBeifong@gmail.com', 'beifongtophlinsuyin')
+            smtp.login('email_test@gmail', 'password')
             smtp.send_message(msg)
 
         if situation:
