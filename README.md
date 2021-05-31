@@ -2,7 +2,7 @@
 App criado para gerenciamento de produtos no inventário.
 Utilizado ```Tkinter``` como a interface gráfica, para a 
 base de dados foi utilizado ```postgreSQL``` e a biblioteca ```smtp``` para 
-o envio de e-mail.
+o envio de e-mails.
 
 ## Funcionalidades
 O app permite a adição de um determinado produto, informando a sua quantidade,
