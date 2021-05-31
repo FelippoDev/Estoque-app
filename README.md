@@ -38,3 +38,6 @@ informando o produto.
 
 ![image](https://user-images.githubusercontent.com/65267252/120124584-6ab82500-c18b-11eb-9ffa-a3ed4ffee539.png)
 
+# Contribuidores
+
+@[Felippo Coelho](https://www.linkedin.com/in/luiz-felippo-coelho/)
