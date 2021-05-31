@@ -31,7 +31,7 @@ O app ainda possui a funcionalidade de envio de e-mails... digamos que esteja em
 um determinado produto e seja necessário pedir uma nova remessa do mesmo ao fornecedor,
 basta então informar o e-mail de contato do fornecedor e clickar no botão checar, e nele
 será feito uma checagem em todos os itens da base de dados se algum deles possui a
-sua quantidade igual a 0, se algum possuir o email será enviado imediatamente ao fornecedor
+sua quantidade igual a 0, e se algum produto possuir sua quantidade igual a, o email será enviado imediatamente ao fornecedor
 informando o produto.
 
 
